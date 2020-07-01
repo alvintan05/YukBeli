@@ -1,4 +1,4 @@
-@extends('layouts.master_admin')
+@extends('layouts/master_admin')
 
 @section('content')
 <!-- Content Header (Page header) -->
@@ -6,8 +6,8 @@
     <div class="container-fluid">
     <div class="row mb-2">
         <div class="col-sm-6">
-        <h1>Table Category</h1>
-        </div>        
+            <h1>Table Category</h1>
+        </div>         
     </div>
     </div><!-- /.container-fluid -->
 </section>
@@ -15,55 +15,60 @@
 <!-- Main content -->
 <section class="content">
 
+    <div class="row">
+        <a style="margin-left: 10px;" href="category/create" class="btn btn-primary">Add Category</a>
+    </div>
+
+    <br>
+
     <!-- Default box -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Add Category</h3>
-        </div>
-        <div class="card-body p-0">
-        <div class="box-body table-responsive no-padding">
-                <table class="table table-hover table-bordered table-striped">
-                <tbody><tr>
-                    <th>ID</th>
-                    <th>User</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                    <th>Reason</th>
-                </tr>
-                <tr>
-                    <td>183</td>
-                    <td>John Doe</td>
-                    <td>11-7-2014</td>
-                    <td><span class="label label-success">Approved</span></td>
-                    <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                </tr>
-                <tr>
-                    <td>219</td>
-                    <td>Alexander Pierce</td>
-                    <td>11-7-2014</td>
-                    <td><span class="label label-warning">Pending</span></td>
-                    <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                </tr>
-                <tr>
-                    <td>657</td>
-                    <td>Bob Doe</td>
-                    <td>11-7-2014</td>
-                    <td><span class="label label-primary">Approved</span></td>
-                    <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                </tr>
-                <tr>
-                    <td>175</td>
-                    <td>Mike Doe</td>
-                    <td>11-7-2014</td>
-                    <td><span class="label label-danger">Denied</span></td>
-                    <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                </tr>
-                </tbody></table>
-            </div>
+            <h3 class="card-title">Jumlah Category: {{ $jumlah_category }}</h3>        
+        </div>        
+        <div class="card-body ">
+            <div class="box-body table-responsive no-padding">
+                @if (!empty($category_list))
+                    <table class="table table-hover table-bordered table-striped">
+                        <thead>
+                            <tr class="d-flex">
+                                <th class="col-3">No</th>
+                                <th class="col-6">Name</th>                                
+                                <th class="col-3">Action</th>
+                            </tr>
+                        </thead>                    
+                        <tbody>
+                            @foreach($category_list as $category)
+                            <tr class="d-flex">
+                                <td class="col-3">{{ $loop->iteration }}</td>
+                                <td class="col-6">{{ $category->category_name }}</td>                                
+                                <td class="col-3">
+                                    <div class="btn-group">
+                                        <!-- Detail icon -->
+                                        <a class="btn" href="{{ url('admin/category/'.$category->id) }}"> <i class="fa fa-eye"></i></a>
+                                        <!-- Edit Icon -->
+                                        <a class="btn" href="{{ url('admin/category/'.$category->id . '/edit') }}"><i class="fa fa-edit"></i></a>
+                                        <!-- Delete Icon -->
+                                        {!! Form::open(['method' => 'DELETE', 'action' => ['AdminController@delete_category', $category->id]]) !!}							
+									    {!! Form::button('<i class="fa fa-trash"></i>', ['type' =>'submit', 'class' => 'btn']) !!}
+									    {!! Form::close() !!}
+                                    </div>                                                                                                                                                                                                                                                                    
+                                </td>                                
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                @else
+                    <p>Tidak ada data Category</p>
+                @endif                
+            </div>            
         </div>
         <!-- /.card-body -->        
-    </div>    
-</div>
+        <div class="card-footer">
+            
+        </div>
+    </div>
+    <!-- /.card -->    
 
 </section>
 <!-- /.content -->
