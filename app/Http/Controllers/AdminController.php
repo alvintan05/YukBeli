@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Category;
+use App\Product;
 use App\Http\Requests\CategoryRequest;
+use App\Http\Requests\ProductRequest;
+use Storage;
 
 class AdminController extends Controller
 {
@@ -15,19 +18,19 @@ class AdminController extends Controller
 
     public function category()
     {
-        $category_list = Category::all();
+        $category_list = Category::orderBy('category_name', 'asc')->paginate(5);
         $jumlah_category = Category::count();
-        return view('admin.category', compact('category_list', 'jumlah_category'));
+        return view('admin.category.category', compact('category_list', 'jumlah_category'));
     }
 
     public function detail_category(Category $category)
     {       
-        return view('admin.detail_category', compact('category'));
+        return view('admin.category.detail_category', compact('category'));
     }
 
     public function create_category()
     {
-        return view('admin.create_category');
+        return view('admin.category.create_category');
     }
 
     public function save_category(CategoryRequest $request)
@@ -42,7 +45,7 @@ class AdminController extends Controller
 
     public function edit_category(Category $category)
     {
-        return view('admin.edit_category', compact('category'));
+        return view('admin.category.edit_category', compact('category'));
     }
 
     public function update_category(Category $category, CategoryRequest $request)
@@ -63,11 +66,105 @@ class AdminController extends Controller
 
     public function product()
     {
-        return view('admin.product');
+        $product_list = Product::all();
+        $jumlah_product = Product::count();
+        return view('admin.product.product', compact('product_list', 'jumlah_product'));
+    }
+    
+    public function detail_product(Product $product)
+    {       
+        return view('admin.product.detail_product', compact('product'));
     }
 
     public function create_product()
+    {        
+        return view('admin.product.create_product');
+    }
+
+    public function save_product(ProductRequest $request)
     {
-        return view('admin.create_product');
+        $input = $request->all();
+
+        // Simpan Foto
+        if($request->hasFile('photo')){
+            $input['photo'] = $this->uploadPhoto($request);
+        }        
+
+        // Simpan data category
+        $product = Product::create($input);
+
+        return redirect('admin/product');
+    }
+
+    public function edit_product(Product $product)
+    {
+        return view('admin.product.edit_product', compact('product'));
+    }
+
+    public function update_product(Product $product, ProductRequest $request)
+    {
+        $input = $request->all();
+
+        // Update Foto        )
+        if ($request->hasFile('photo')) {
+            $input['photo'] = $this->updatePhoto($product, $request);            
+        }
+
+        // Update data product
+        $product->update($input);
+
+        return redirect('admin/product');
+    }
+
+    public function delete_product(Product $product)
+    {
+        // Hapus foto
+        $this->deletePhoto($product);        
+
+        $product->delete();
+        return redirect('admin/product');
+    }
+
+    private function uploadPhoto(ProductRequest $request){
+        $photo = $request->file('photo');
+        $ext = $photo->getClientOriginalExtension();
+
+        if($request->file('photo')->isValid()){
+            $photo_name = date('YmdHis'). ".$ext";
+            $upload_path = 'product';
+            $request->file('photo')->move($upload_path, $photo_name);            
+            return $photo_name;
+        }
+
+        return false;
+    }
+
+    private function updatePhoto(Product $product, ProductRequest $request){
+        // Jika user mengisi foto
+        if ($request->hasFile('photo')){
+            // Hapus foto lama jika ada foto baru
+            $exist = Storage::disk('photo')->exists($product->photo);
+            if(isset($product->photo) && $exist){
+                $delete = Storage::disk('photo')->delete($product->photo);
+            }
+
+            // Upload foto baru
+            $photo = $request->file('photo');
+            $ext = $photo->getClientOriginalExtension();
+            if($request->file('photo')->isValid()){
+                $photo_name = date('YmdHis'). ".$ext";
+                $upload_path = 'product';
+                $request->file('photo')->move($upload_path, $photo_name);
+                return $photo_name;
+            }
+        }
+    }
+
+    private function deletePhoto(Product $product){
+        $exist = Storage::disk('photo')->exists($product->photo);
+
+        if($exist){
+            $delete = Storage::disk('photo')->delete($product->photo);
+        }
     }
 }

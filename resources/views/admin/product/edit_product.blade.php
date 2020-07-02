@@ -5,7 +5,7 @@
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
-                <div class="col-sm-6 mx-auto">
+                <div class="col-sm-10 mx-auto">
                     <h1>Edit Product</h1>
                 </div>          
             </div>
@@ -15,11 +15,11 @@
     <!-- Main content -->
     <section class="content" style="margin-right: 10px; margin-left: 10px;">
             
-        <div class="card col-md-6 col-sm-12 mx-auto">
-            {!! Form::open(['url' => 'siswa']) !!}
-                @include('admin.form_product', ['submitButtonText' => 'Simpan'])
-            {!! Form::close() !!}
-        </div>	
+    <div class="card col-md-10 col-sm-12 mx-auto">
+            {!! Form::model($product, ['method' => 'PATCH', 'files' => true, 'action' => ['AdminController@update_product', $product->id]]) !!}
+		        @include('admin.product.form_product', ['submitButtonText' => 'Update'])
+		    {!! Form::close() !!}
+        </div>
 
     </section>
     <!-- /.content -->	

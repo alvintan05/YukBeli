@@ -32,3 +32,8 @@ Route::delete('admin/category/{category}', 'AdminController@delete_category');
 // Route Admin Product
 Route::get('admin/product', 'AdminController@product');
 Route::get('admin/product/create', 'AdminController@create_product');
+Route::get('admin/product/{product}', 'AdminController@detail_product');
+Route::get('admin/product/{product}/edit', 'AdminController@edit_product');
+Route::post('admin/product', 'AdminController@save_product');
+Route::patch('admin/product/{product}', 'AdminController@update_product');
+Route::delete('admin/product/{product}', 'AdminController@delete_product');

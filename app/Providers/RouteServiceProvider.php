@@ -30,9 +30,15 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
-
         parent::boot();
+
+        Route::bind('admin/category', function($category){
+            return \App\Category::findOrFail($category);
+        });
+
+        Route::bind('admin/product', function($product){
+            return \App\Product::findOrFail($product);
+        });
     }
 
     /**
