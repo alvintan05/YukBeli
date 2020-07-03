@@ -39,6 +39,10 @@ class RouteServiceProvider extends ServiceProvider
         Route::bind('admin/product', function($product){
             return \App\Product::findOrFail($product);
         });
+
+        Route::bind('user/product', function($product){
+            return \App\Product::findOrFail($product);
+        });
     }
 
     /**

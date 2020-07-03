@@ -37,3 +37,13 @@ Route::get('admin/product/{product}/edit', 'AdminController@edit_product');
 Route::post('admin/product', 'AdminController@save_product');
 Route::patch('admin/product/{product}', 'AdminController@update_product');
 Route::delete('admin/product/{product}', 'AdminController@delete_product');
+
+// Route User
+Route::get('user', 'UserController@index');
+
+// Route User Product
+Route::get('user/product', 'UserController@product');
+Route::get('user/product/{product}', 'UserController@detail_product');
+
+// Route User Wishlist
+Route::get('user/wishlist', 'UserController@wishlist');
