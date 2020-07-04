@@ -12,13 +12,36 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+// Route User
+Route::get('user/dashboard', 'UserController@dashboard');
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route User Login
+Route::get('/', 'LoginController@index');
+Route::post('/', 'LoginController@login_user');
+
+// Route User Logout
+Route::get('user/logout', 'UserController@logout');
+
+// Route User Register
+Route::get('register', 'UserController@register');
+Route::post('register', 'UserController@register_post');
+
+// Route User Product
+Route::get('user/product', 'UserController@product');
+Route::get('user/product/{product}', 'UserController@detail_product');
+
+// Route User Wishlist
+Route::get('user/wishlist', 'UserController@wishlist');
 
 // Route Admin
-Route::get('admin', 'AdminController@index');
+Route::get('admin/dashboard', 'AdminController@dashboard');
+
+// Route Admin Login
+Route::get('admin', 'LoginController@index');
+Route::post('admin', 'LoginController@login_admin');
+
+// Route Admin Logout
+Route::get('admin/logout', 'AdminController@logout');
 
 // Route Admin Category
 Route::get('admin/category', 'AdminController@category');
@@ -37,13 +60,3 @@ Route::get('admin/product/{product}/edit', 'AdminController@edit_product');
 Route::post('admin/product', 'AdminController@save_product');
 Route::patch('admin/product/{product}', 'AdminController@update_product');
 Route::delete('admin/product/{product}', 'AdminController@delete_product');
-
-// Route User
-Route::get('user', 'UserController@index');
-
-// Route User Product
-Route::get('user/product', 'UserController@product');
-Route::get('user/product/{product}', 'UserController@detail_product');
-
-// Route User Wishlist
-Route::get('user/wishlist', 'UserController@wishlist');

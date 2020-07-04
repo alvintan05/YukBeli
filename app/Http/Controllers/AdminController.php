@@ -5,15 +5,33 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Category;
 use App\Product;
+use App\Admin;
 use App\Http\Requests\CategoryRequest;
 use App\Http\Requests\ProductRequest;
+use Illuminate\Support\Facades\Session;
 use Storage;
 
 class AdminController extends Controller
 {
     public function index()
+    {        
+        
+    }   
+
+    public function logout()
     {
-        return view('admin.dashboard');
+        Session::flush();
+        return redirect('admin');
+    }
+
+    public function dashboard()
+    {        
+        if(Session::get('login') && Session::get('role') == 'admin'){
+            return view('admin.dashboard');
+        }
+        else{
+            return redirect('admin');            
+        }  
     }
 
     public function category()

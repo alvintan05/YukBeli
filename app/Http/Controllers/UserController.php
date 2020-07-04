@@ -4,12 +4,51 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Product;
+use App\User;
+use App\Http\Requests\RegisterRequest;
+use Illuminate\Support\Facades\Session;
 
 class UserController extends Controller
 {
     public function index()
     {
-        return view('user.dashboard');
+       
+    }
+
+    public function register()
+    {
+        return view('user.register.register');
+    }
+
+    public function register_post(RegisterRequest $request)
+    {
+        $input = $request->except('password');
+        $password = md5($request->input('password'));
+
+        // Simpan Foto
+        if($request->hasFile('photo')){
+            $input['photo'] = $this->uploadPhoto($request);
+        }        
+
+        $user = User::create($input + ['password'=>$password]);
+
+        return redirect('/');
+    }
+
+    public function logout()
+    {
+        Session::flush();
+        return redirect('/');
+    }
+
+    public function dashboard()
+    {
+        if(Session::get('login') && Session::get('role') == 'user'){
+            return view('user.dashboard');
+        }
+        else{
+            return redirect('/');            
+        }        
     }
 
     public function product()
@@ -22,6 +61,20 @@ class UserController extends Controller
     public function detail_product(Product $product)
     {
         return view('user.product.detail_product', compact('product'));
+    }
+
+    private function uploadPhoto(RegisterRequest $request){
+        $photo = $request->file('photo');
+        $ext = $photo->getClientOriginalExtension();
+
+        if($request->file('photo')->isValid()){
+            $photo_name = date('YmdHis'). ".$ext";
+            $upload_path = 'user';
+            $request->file('photo')->move($upload_path, $photo_name);            
+            return $photo_name;
+        }
+
+        return false;
     }
 
 }

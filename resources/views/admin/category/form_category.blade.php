@@ -19,7 +19,7 @@
 <div class="form-group">
 	{!! Form::label('description', 'Deskripsi Category:', ['class' => 'control-label']) !!}
 	@if ($errors->any())		
-		{!! Form::text('description', null, [
+		{!! Form::textArea('description', null, [
 				'class' => "form-control ".($errors->has('description') ? ' is-invalid' : ' is-valid')
 		]) !!}
 	@else
