@@ -23,7 +23,8 @@
             <div class="box-body">
                 @if (!empty($product_list))
                     <div class="card-deck">
-                        @foreach($product_list as $product)
+                        <?php $count = 0;?>
+                        @foreach($product_list as $product)                        
                             <div class="card col-md-3 col-sm-6">
                                 <center>
                                     <img src="{{ asset('product/' . $product->photo) }}" alt="" class="card-img-top"> 
@@ -33,6 +34,12 @@
                                     </div>                                    
                                 </center>                                
                             </div>
+                            <?php 
+                                $count++;
+                                if ($count%4 == 0) {
+                                    echo "</div> </div> <br> <div class=\"row\"> <div class=\"card-deck\">";	
+                                }                             
+                            ?>
                         @endforeach
                     </div>                     
                 @else
@@ -40,7 +47,14 @@
                 @endif   
             </div>
         </div>
-        <!-- /.card-body -->        
+        <!-- /.card-body -->  
+        <div class="card-footer">
+            <div class="card-tools">
+                <ul class="pagination pagination-sm float-right">
+                    {{ $product_list->links() }}
+                </ul>
+            </div>
+        </div>      
     </div>
     <!-- /.card -->    
 

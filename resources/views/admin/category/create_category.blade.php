@@ -17,7 +17,7 @@
             
         <div class="card col-md-6 col-sm-12 mx-auto">
             {!! Form::open(['url' => 'admin/category']) !!}
-                @include('admin.category.form_category', ['submitButtonText' => 'Simpan'])
+                @include('admin.category.form_category', ['submitButtonText' => 'Save'])
             {!! Form::close() !!}
         </div>	
 

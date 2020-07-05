@@ -17,7 +17,7 @@
             
         <div class="card col-md-10 col-sm-12 mx-auto">
             {!! Form::open(['url' => 'admin/product', 'files' => true]) !!}
-                @include('admin.product.form_product', ['submitButtonText' => 'Simpan'])
+                @include('admin.product.form_product', ['submitButtonText' => 'Save'])
             {!! Form::close() !!}
         </div>	
 

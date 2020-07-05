@@ -29,6 +29,7 @@ Route::post('register', 'UserController@register_post');
 // Route User Product
 Route::get('user/product', 'UserController@product');
 Route::get('user/product/{product}', 'UserController@detail_product');
+Route::post('user/product', 'UserController@save_wishlist');
 
 // Route User Wishlist
 Route::get('user/wishlist', 'UserController@wishlist');
@@ -60,3 +61,9 @@ Route::get('admin/product/{product}/edit', 'AdminController@edit_product');
 Route::post('admin/product', 'AdminController@save_product');
 Route::patch('admin/product/{product}', 'AdminController@update_product');
 Route::delete('admin/product/{product}', 'AdminController@delete_product');
+
+// Route Admin User List
+Route::get('admin/user_list', 'AdminController@user_list');
+
+// Route Admin Profile
+Route::get('admin/profile', 'AdminController@profile');

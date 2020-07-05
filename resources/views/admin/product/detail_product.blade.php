@@ -28,11 +28,13 @@
 			</tr>
 			<tr>
 				<th>Price (Rp)</th>
-				<td>{{$product->price}}</td>
+				<td>Rp {{number_format($product->price,2,',','.')}}</td>
 			</tr>
 			<tr>
 				<th>Description</th>
-				<td>{{ $product->description }}</td>
+				<td>
+					<?php echo nl2br("".$product->description."", false) ?>			
+				</td>
 			</tr>	
             <tr>
 				<th>Category</th>

@@ -21,7 +21,12 @@ class LoginController extends Controller
             }            
         }
         else{
-            return view('login.login_user');            
+            if(request()->segment(1) == ''){
+                return view('login.login_user');
+            }
+            if(request()->segment(1) == 'admin'){
+                return view('login.login_admin');
+            }                   
         }
     }
 

@@ -71,7 +71,7 @@
 			'class' => "control-label ".($errors->has('photo') ? ' is-invalid' : ' is-valid')
 		]) !!}
 	@else		
-		{!! Form::label('photo', 'photo:', ['class' => 'control-label']) !!}			
+		{!! Form::label('photo', 'Photo:', ['class' => 'control-label']) !!}			
 	@endif	
 		<br>
 		{!! Form::file('photo') !!}

@@ -37,10 +37,11 @@
                                 <th class="col-3">Action</th>
                             </tr>
                         </thead>                    
-                        <tbody>
+                        <tbody>                          
+                            <?php $i = $product_list->perPage() * ($product_list->currentPage() - 1);?>
                             @foreach($product_list as $product)
                             <tr class="d-flex">
-                                <td class="col-3">{{ $loop->iteration }}</td>
+                                <td class="col-3">{{ ++$i }}</td>
                                 <td class="col-6">{{ $product->product_name }}</td>                                
                                 <td class="col-3">
                                     <div class="btn-group">
@@ -63,7 +64,14 @@
                 @endif   
             </div>
         </div>
-        <!-- /.card-body -->        
+        <!-- /.card-body -->      
+        <div class="card-footer">
+            <div class="card-tools">
+                <ul class="pagination pagination-sm float-right">
+                    {{ $product_list->links() }}
+                </ul>
+            </div>
+        </div>  
     </div>
     <!-- /.card -->    
 

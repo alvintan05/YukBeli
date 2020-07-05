@@ -38,9 +38,10 @@
                             </tr>
                         </thead>                    
                         <tbody>
+                            <?php $i = $category_list->perPage() * ($category_list->currentPage() - 1);?>
                             @foreach($category_list as $category)
                             <tr class="d-flex">
-                                <td class="col-3">{{ $loop->iteration }}</td>
+                                <td class="col-3">{{ ++$i }}</td>
                                 <td class="col-6">{{ $category->category_name }}</td>                                
                                 <td class="col-3">
                                     <div class="btn-group">
@@ -61,7 +62,7 @@
                 @else
                     <p>Tidak ada data Category</p>
                 @endif                
-            </div>            
+            </div>              
         </div>
         <!-- /.card-body -->        
         <div class="card-footer">

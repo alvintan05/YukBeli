@@ -52,7 +52,7 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="{{ url('/user/dashboard') }}" class="brand-link">
-      <img src="/adminlte/img/AdminLTELogo.png"
+      <img src="/adminlte/img/logo.jpg"
            alt="YukBeli Logo"
            class="brand-image img-circle elevation-3"
            style="opacity: .8">
@@ -77,7 +77,7 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->          
           <li class="nav-item ">
-            <a href="{{ url('/user/dashboard') }}" class="nav-link active">
+            <a href="{{ url('/user/dashboard') }}" class="nav-link {{ (Request::segment(2)=='dashboard') ? 'active' : ''}}">
               <i class="nav-icon fas fa-home"></i>              
               <p>
                 Dashboard            
@@ -85,7 +85,7 @@
             </a>            
           </li>          
           <li class="nav-item">
-            <a href="{{ url('/user/product') }}" class="nav-link">
+            <a href="{{ url('/user/product') }}" class="nav-link {{ (Request::segment(2)=='product') ? 'active' : ''}}">
               <i class="nav-icon fas fa-shopping-basket"></i>
               <p>
                 Product List
@@ -93,7 +93,7 @@
             </a>
           </li>
           <li class="nav-item has-treeview">
-            <a href="{{ url('/user/wishlist') }}" class="nav-link">
+            <a href="{{ url('/user/wishlist') }}" class="nav-link {{ (Request::segment(2)=='wishlist') ? 'active' : ''}}">
               <i class="nav-icon fas fa-heart"></i>
               <p>
                 Wishlist

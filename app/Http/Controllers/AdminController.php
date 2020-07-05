@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Category;
 use App\Product;
 use App\Admin;
+use App\User;
 use App\Http\Requests\CategoryRequest;
 use App\Http\Requests\ProductRequest;
 use Illuminate\Support\Facades\Session;
@@ -36,7 +37,7 @@ class AdminController extends Controller
 
     public function category()
     {
-        $category_list = Category::orderBy('category_name', 'asc')->paginate(5);
+        $category_list = Category::orderBy('category_name', 'asc')->paginate(4);
         $jumlah_category = Category::count();
         return view('admin.category.category', compact('category_list', 'jumlah_category'));
     }
@@ -84,7 +85,7 @@ class AdminController extends Controller
 
     public function product()
     {
-        $product_list = Product::all();
+        $product_list = Product::orderBy('product_name', 'asc')->paginate(4);
         $jumlah_product = Product::count();
         return view('admin.product.product', compact('product_list', 'jumlah_product'));
     }
@@ -101,15 +102,28 @@ class AdminController extends Controller
 
     public function save_product(ProductRequest $request)
     {
-        $input = $request->all();
+        $input = $request->except('description');
 
         // Simpan Foto
         if($request->hasFile('photo')){
             $input['photo'] = $this->uploadPhoto($request);
         }        
 
+        $pecah = explode("\r\n\r\n", $request->input('description'));
+
+        // string kosong inisialisasi
+        $description = "";
+            
+        // untuk setiap substring hasil pecahan, sisipkan <p> di awal dan </p> di akhir
+        // lalu menggabungnya menjadi satu string utuh $description
+        for ($i=0; $i<=count($pecah)-1; $i++)
+        {
+            $part = str_replace($pecah[$i], "<p>".$pecah[$i]."</p>", $pecah[$i]);
+            $description .= $part;
+        }        
+
         // Simpan data category
-        $product = Product::create($input);
+        $product = Product::create($input + ['description'=>$description]);
 
         return redirect('admin/product');
     }
@@ -141,6 +155,19 @@ class AdminController extends Controller
 
         $product->delete();
         return redirect('admin/product');
+    }
+
+    public function user_list()
+    {
+        $user_list = User::all();
+        $jumlah_user = User::count();
+        return view('admin.user', compact('user_list', 'jumlah_user'));
+    }
+
+    public function profile()
+    {
+        $admin = Admin::findOrFail(Session::get('id'));
+        return view('admin.profile', compact('admin'));
     }
 
     private function uploadPhoto(ProductRequest $request){

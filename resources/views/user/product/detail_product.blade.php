@@ -21,14 +21,14 @@
 					<div>							
 						<center>
 							@if (isset($product->photo))
-								<img src="{{ asset('product/' . $product->photo) }}">
+								<img style="height:300px;" src="{{ asset('product/' . $product->photo) }}">
 							@endif							
 						</center>
 					</div>
 					<br>
 					<div>						
-						<h5><b>Deskripsi</b></h5>
-						<p>{{$product->description}}</p>
+						<h5><b>Deskripsi</b></h5>						
+						<p><?php echo nl2br("".$product->description."", false) ?></p>
 					</div>					
 				</div>				
 			</div>
@@ -40,7 +40,11 @@
 						<h4>Harga</h4>
 						<h5>Rp {{number_format($product->price,2,',','.')}} </h5>
 						<br>
-						<p>Category : <i>{{$product->category->category_name}}</i></p>
+						<p>Category : <i>{{$product->category->category_name}}</i></p>				
+						{!! Form::open(['url' => 'user/product']) !!}
+							{!! Form::hidden('id', $product->id) !!}
+							{!! Form::submit('Add To Wishlist', ['class' => 'btn btn-primary form-control']) !!}
+						{!! Form::close() !!}						     
 					</div>													
 				</div>				
 			</div>
