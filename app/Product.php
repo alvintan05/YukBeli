@@ -19,4 +19,8 @@ class Product extends Model
     public function category(){
         return $this->belongsTo('App\Category', 'id_category');
     }
+
+    public function user(){
+        return $this->belongsToMany('App\Hobi', 'wishlist', 'id_product', 'id_user');
+    }
 }

@@ -33,6 +33,7 @@ Route::post('user/product', 'UserController@save_wishlist');
 
 // Route User Wishlist
 Route::get('user/wishlist', 'UserController@wishlist');
+Route::delete('user/wishlist', 'UserController@delete_wishlist');
 
 // Route User Profile
 Route::get('user/profile', 'UserController@profile');

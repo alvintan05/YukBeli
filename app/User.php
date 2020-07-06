@@ -18,4 +18,8 @@ class User extends Model
         'email',
         'password',
     ];
+
+    public function wishlist(){
+        return $this->belongsToMany('App\Product', 'wishlist', 'id_user', 'id_product')->withTimeStamps();
+    }
 }

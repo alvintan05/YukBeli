@@ -40,10 +40,16 @@
 						<h4>Harga</h4>
 						<h5>Rp {{number_format($product->price,2,',','.')}} </h5>
 						<br>
-						<p>Category : <i>{{$product->category->category_name}}</i></p>				
-						{!! Form::open(['url' => 'user/product']) !!}
+						<p>Category : <i>{{$product->category->category_name}}</i></p>																				
+							@if($wishlist_status)
+								{!! Form::open(['method' => 'DELETE', 'action' => ['UserController@delete_wishlist']]) !!}
+								{!! Form::submit('Remove From Wishlist', ['class' => 'btn btn-primary form-control']) !!}
+							@else
+								{!! Form::open(['url' => 'user/product']) !!}
+								{!! Form::submit('Add To Wishlist', ['class' => 'btn btn-primary form-control']) !!}
+							@endif							
 							{!! Form::hidden('id', $product->id) !!}
-							{!! Form::submit('Add To Wishlist', ['class' => 'btn btn-primary form-control']) !!}
+							{!! Form::hidden('page', 'product') !!}
 						{!! Form::close() !!}						     
 					</div>													
 				</div>				

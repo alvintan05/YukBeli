@@ -20,14 +20,24 @@
         </div>
         <div class="card-body">
             <div class="box-body">
-                @if (!empty($wishlist_list))
+                @if (!empty($user))
                     <div class="card-deck">
-                        @foreach($wishlist_list as $wishlist)
+                        @foreach($user->wishlist as $item)
                             <div class="card col-md-3 col-sm-6">
-                                <center>                                    
+                                <center>                   
+                                    <img src="{{ asset('product/' . $item->photo) }}" alt="" class="card-img-top">                  
                                     <div class="card-body">
-                                        <h5>{{$wishlist->id_product}}</h5> 
-                                    </div>                                    
+                                        <h6>{{$item->product_name}}</h6>                                                                             
+                                    </div>                               
+                                    <a href="{{ url('user/product/'.$item->id) }}" class="btn btn-primary">Detail</a>
+                                    <br>
+                                    <br>
+                                    {!! Form::open(['method' => 'DELETE', 'action' => ['UserController@delete_wishlist']]) !!}							
+                                        {!! Form::hidden('id', $item->id) !!}
+                                        {!! Form::hidden('page', 'wishlist') !!}
+                                        {!! Form::submit('Remove From Wishlist', ['class' => 'btn btn-primary']) !!}
+                                    {!! Form::close() !!}                                    
+                                    <br>
                                 </center>                                
                             </div>
                         @endforeach

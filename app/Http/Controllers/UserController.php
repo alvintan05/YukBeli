@@ -62,28 +62,38 @@ class UserController extends Controller
     }
 
     public function detail_product(Product $product)
-    {
-        return view('user.product.detail_product', compact('product'));
-    }
-
-    public function save_wishlist(Request $request)
-    {        
-        $id_user = Session::get('id');
-        $id_product = $request->input('id');
-        
-        $wishlist = Wishlist::create([
-            'id_user' => $id_user,
-            'id_product' => $id_product
-        ]);
-
-        return redirect('user/product');
+    {   
+        $wishlist_status = false;
+        if(Wishlist::where(['id_user' => Session::get('id'), 'id_product' => $product->id])->exists()){
+            $wishlist_status = true;
+        }
+        return view('user.product.detail_product', compact('product', 'wishlist_status'));
     }
 
     public function wishlist()
-    {           
-        $wishlist_list = Wishlist::all()->where('id_user', Session::get('id'));        
-        return view('user.wishlist.wishlist', compact('wishlist_list'));
+    {                   
+        $user = User::findOrFail(Session::get('id'));
+        return view('user.wishlist.wishlist', compact('user'));
+    }    
+
+    public function save_wishlist(Request $request)
+    {                
+        $user = User::findOrFail(Session::get('id'));
+        $user->wishlist()->attach($request->input('id'));
+
+        return redirect('user/product/'.$request->input('id'));
     }
+
+    public function delete_wishlist(Request $request)
+    {    
+        Wishlist::where(['id_user'=>Session::get('id'), 'id_product'=>$request->input('id')])->delete();
+
+        if($request->input('page') == 'product'){
+            return redirect('user/product/'.$request->input('id'));
+        } else if($request->input('page') == 'wishlist'){
+            return redirect('user/wishlist');
+        }                                
+    }    
 
     public function profile()
     {

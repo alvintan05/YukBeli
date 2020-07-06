@@ -29,7 +29,7 @@
                                 <center>
                                     <img src="{{ asset('product/' . $product->photo) }}" alt="" class="card-img-top"> 
                                     <div class="card-body">
-                                        <h5>{{$product->product_name}}</h5>
+                                        <h6>{{$product->product_name}}</h6>
                                         <a href="{{ url('user/product/'.$product->id) }}" class="btn btn-primary stretched-link">Detail</a>
                                     </div>                                    
                                 </center>                                
