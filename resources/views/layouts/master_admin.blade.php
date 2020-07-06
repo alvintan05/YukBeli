@@ -110,7 +110,7 @@
           </li>
           <li class="nav-item has-treeview">
             <a href="{{url('/admin/profile')}}" class="nav-link {{ (Request::segment(2)=='profile') ? 'active' : ''}}">
-              <i class="nav-icon fas fa-user-circle"></i>
+              <i class="nav-icon fas fa-user"></i>
               <p>
                 Profile Admin
               </p>

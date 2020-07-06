@@ -34,6 +34,10 @@ Route::post('user/product', 'UserController@save_wishlist');
 // Route User Wishlist
 Route::get('user/wishlist', 'UserController@wishlist');
 
+// Route User Profile
+Route::get('user/profile', 'UserController@profile');
+Route::patch('user/profile','UserController@update_profile');
+
 // Route Admin
 Route::get('admin/dashboard', 'AdminController@dashboard');
 

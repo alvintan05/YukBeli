@@ -7,7 +7,9 @@ use App\Product;
 use App\User;
 use App\Wishlist;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Session;
+use Storage;
 
 class UserController extends Controller
 {
@@ -83,6 +85,29 @@ class UserController extends Controller
         return view('user.wishlist.wishlist', compact('wishlist_list'));
     }
 
+    public function profile()
+    {
+        $user = User::findOrFail(Session::get('id'));
+        return view('user.profile.profile', compact('user'));
+    }
+
+    public function update_profile(UserRequest $request)
+    {
+        $input = $request->all();
+        $user = User::findOrFail(Session::get('id'));
+
+        // Update Foto        )
+        if ($request->hasFile('photo')) {
+            $input['photo'] = $this->updatePhoto($user, $request);  
+            Session::put('photo',$input['photo']);          
+        }
+
+        // Update data user
+        $user->update($input);        
+
+        return redirect('user/profile');
+    }
+
     private function uploadPhoto(RegisterRequest $request){
         $photo = $request->file('photo');
         $ext = $photo->getClientOriginalExtension();
@@ -95,6 +120,27 @@ class UserController extends Controller
         }
 
         return false;
+    }
+
+    private function updatePhoto(User $user, UserRequest $request){
+        // Jika user mengisi foto
+        if ($request->hasFile('photo')){
+            // Hapus foto lama jika ada foto baru
+            $exist = Storage::disk('photo')->exists($user->photo);
+            if(isset($user->photo) && $exist){
+                $delete = Storage::disk('photo')->delete($user->photo);
+            }
+
+            // Upload foto baru
+            $photo = $request->file('photo');
+            $ext = $photo->getClientOriginalExtension();
+            if($request->file('photo')->isValid()){
+                $photo_name = date('YmdHis'). ".$ext";
+                $upload_path = 'user';
+                $request->file('photo')->move($upload_path, $photo_name);
+                return $photo_name;                
+            }
+        }
     }
 
 }
